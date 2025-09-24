@@ -222,7 +222,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 📬 Contact
 
 - **GitHub**: [@sarkarsubhadip604-dotcom](https://github.com/sarkarsubhadip604-dotcom)
-- **Repository**: [3d-audio-sphere-visualizer](https://github.com/sarkarsubhadip604-dotcom/3d-audio-sphere-visualizer)
+- **Repository**: [3d-audio-sphere-visualizer2.0](https://github.com/sarkarsubhadip604-dotcom/3d-audio-sphere-visualizer2.0)
 
 ---
 
