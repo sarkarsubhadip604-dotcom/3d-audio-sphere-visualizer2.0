@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Audio Visualizer</title>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Font awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>3D Audio Visualizer</h1>
+            <p class="subtitle">Experience your music in a whole new dimension</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- File Upload Section -->
+            <section class="upload-section">
+                <div class="card">
+                    <div class="card__body">
+                        <div id="dropZone" class="file-drop-zone">
+                            <div class="drop-content">
+                                <i class="fas fa-cloud-upload-alt" style="font-size: 3em; color: var(--color-primary); margin-bottom: 1rem;"></i>
+                                <h3>Drop your audio file here</h3>
+                                <p>Or click to browse</p>
+                                <button id="fileButton" class="btn btn--primary">
+                                    <i class="fas fa-folder-open"></i>
+                                    Choose File
+                                </button>
+                                <input type="file" id="audioFile" accept="audio/*" style="display: none;">
+                            </div>
+                        </div>
+
+                        <!-- File Info -->
+                        <div id="fileInfo" class="hidden" style="margin-top: 1rem; text-align: center;">
+                            <div class="status status--success">
+                                <i class="fas fa-check"></i>
+                                <span id="fileName">No file selected</span>
+                            </div>
+                        </div>
+
+                        <!-- Loading Indicator -->
+                        <div id="loadingIndicator" class="hidden" style="margin-top: 1rem; text-align: center;">
+                            <div class="status status--info">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                Loading audio file...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3D Visualizer Section -->
+            <section class="visualizer-section">
+                <div class="card">
+                    <div class="card__body" style="padding: 0; overflow: hidden;">
+                        <div id="canvasContainer" style="width: 100%; height: 500px; position: relative;">
+                            <canvas id="visualizerCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Audio Controls Section -->
+            <section class="controls-section">
+                <div class="card">
+                    <div class="card__body">
+                        <!-- Playback Controls -->
+                        <div class="audio-controls">
+                            <button id="playPauseBtn" class="btn btn--primary btn--lg" disabled>
+                                <i class="fas fa-play play-icon"></i>
+                                <i class="fas fa-pause pause-icon hidden"></i>
+                            </button>
+
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progressBar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <div class="time-display">
+                                    <span id="currentTime">0:00</span>
+                                    <span>/</span>
+                                    <span id="duration">0:00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Volume Control -->
+                        <div class="form-group">
+                            <label class="form-label" for="volumeSlider">
+                                <i class="fas fa-volume-up"></i>
+                                Volume
+                            </label>
+                            <input type="range" id="volumeSlider" class="form-control" min="0" max="100" value="50">
+                        </div>
+
+                        <!-- Visualization Settings -->
+                        <div class="form-group">
+                            <label class="form-label" for="visualizationMode">
+                                <i class="fas fa-eye"></i>
+                                Visualization Mode
+                            </label>
+                            <select id="visualizationMode" class="form-control">
+                                <option value="frequency">Frequency</option>
+                                <option value="waveform">Waveform</option>
+                                <option value="particles">Particles</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="sensitivitySlider">
+                                <i class="fas fa-sliders-h"></i>
+                                Sensitivity
+                            </label>
+                            <input type="range" id="sensitivitySlider" class="form-control" min="0.1" max="3" step="0.1" value="1">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Instructions Section -->
+            <section class="instructions-section">
+                <div class="card">
+                    <div class="card__body">
+                        <h3>How to Use</h3>
+                        <ul>
+                            <li>Upload an audio file (MP3, WAV, OGG, or M4A format)</li>
+                            <li>Click the play button to start audio playback</li>
+                            <li>Watch the 3D sphere react to your music in real-time</li>
+                            <li>Use your mouse to rotate and zoom the 3D view</li>
+                            <li>Adjust volume and sensitivity for the best experience</li>
+                        </ul>
+
+                        <h4>Browser Requirements:</h4>
+                        <p>This visualizer requires a modern browser with Web Audio API and WebGL support. Works best in Chrome, Firefox, Safari, and Edge.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Error</h3>
+                <button id="closeErrorModal" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">An error occurred.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="okErrorModal" class="btn btn--primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
