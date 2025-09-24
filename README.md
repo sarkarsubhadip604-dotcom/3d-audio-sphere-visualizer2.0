@@ -1,4 +1,4 @@
-# 3D Audio Sphere Visualizer
+# 3D Audio Sphere Visualizer 2.0
 
 A stunning 3D mesh sphere audio visualizer that transforms your music into mesmerizing visual experiences. Upload any audio file and watch as the 3D sphere responds to the music in real-time, creating a captivating audio-visual experience.
 
